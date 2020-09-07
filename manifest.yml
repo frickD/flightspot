@@ -1,0 +1,5 @@
+applications:
+- name: Flight-Spot
+  host: Flight-Spot-App
+  path: target/flightspot-0.1.0.jar
+  buildpack: java_buildpack
