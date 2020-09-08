@@ -35,15 +35,15 @@
 
 
       <div class="card">
-          <div class="card-header color-background" id="headingTwo">
+          <div class="card-header color-background" id="headingColap">
             <h5 class="mb-0">
-              <button style="color:white" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              <button style="color:white" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseColap" aria-expanded="false" aria-controls="collapseColap">
                 Neuen Flieger hinzufügen
               </button>
             </h5>
           </div>
-          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-            <div class="card-body">
+          <div id="collapseColap" class="collapse" aria-labelledby="headingColap" data-parent="#accordion">
+            <div id="accordion" class="card-body">
               <div id="aimode"class="" style="">
                 <h5 style="margin-top:30px"class="card-title">Scanne ein Flugzeug.</h5>
                 <p class="card-text">Scanne mit AI einen Flieger, um die Daten zu erhalten.</p>
@@ -200,72 +200,29 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">AI Medikamenten Suche</h5>
+        <h5 class="modal-title">AI Flieger Analyse</h5>
       </div>
       <div class="modal-body">
         <div class="card">
           <div class="card-header color-background">
-            Folgendes Medikament gefunden:
+            Folgender Flieger erkannt:
           </div>
           <div class="card-body">
             <div class="text-center">
-              <img  id="medicament-img" style="width:100px"src="img/cobee/info.png"></img>
+              <img  id="plane-img" style="width:300px"src="img/cobee/info.png"></img>
             </div>
-            <h5 id="medicament-title"  style="margin-top:30px"class="card-title">Willkommen bei CoBee.</h5>
-            <p id="medicament-description"  class="card-text"></p>
-          </div>
-        </div>
-
-        <div id="accordion" style="margin-top:30px">
-
-          <div class="card">
-            <div class="card-header color-background" id="headingTwo">
-              <h5 class="mb-0">
-                <button  style="color:white" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                  Verwendung.
-                </button>
-              </h5>
-            </div>
-            <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-              <div  id="medicament-usage" class="card-body">
-
-              </div>
-            </div>
+            <h5 id="plane-title"  style="margin-top:30px"class="card-title"></h5>
+            <p id="plane-description"  class="card-text"></p>
           </div>
 
-          <div class="card">
-            <div class="card-header color-background" id="headingTwo">
-              <h5 class="mb-0">
-                <button style="color:white" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                  Effekt.
-                </button>
-              </h5>
-            </div>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-              <div id="medicament-effect" class="card-body">
 
-              </div>
-            </div>
-          </div>
 
-          <div class="card">
-            <div class="card-header color-background" id="headingThree">
-              <h5 class="mb-0">
-                <button style="color:white" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                  Inhaltsstoffe.
-                </button>
-              </h5>
-            </div>
-            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-              <div id="medicament-substances"  class="card-body">
-
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Okay</button>
+        </div>
+
+      </div>
+      <div class="modal-footer" style="background: #3fbc96">
+        <button type="button" class="btn btn-secondary" style="background: #489fa2" data-dismiss="modal">Übernehmen</button>
       </div>
     </div>
   </div>
@@ -293,8 +250,9 @@ function initApp() {
       "crossDomain": true,
       "url": "https://gateway.watsonplatform.net/visual-recognition/api/v3/classify?version=2018-03-19",
       "method": "POST",
+      "timeout": 0,
       "headers": {
-        "authorization": "Basic YXBpa2V5OktndVlSYll0Y3ZvdUVaSEwwdVNDMzl1Rl9aS2lBS2pPd0tVV21rNUNYZ08z"
+        "Authorization": "Basic YXBpa2V5OjJrbVFoSFRoLWRRLTNGZHl4UlE3UWFKSm1xN0Q5VjRxSGR6TGhVaUF4OUN5"
       },
       "processData": false,
       "contentType": false,
@@ -302,20 +260,77 @@ function initApp() {
       "data": form
     }
     $.ajax(settings).done(function(response) {
+      $("#medicament-modal").modal("show");
       runLoader(false);
       var res = JSON.parse(response);
       console.log(res);
       if (typeof res.images[0].classifiers[0].classes[0].class != "undefined") {
-        var product = res.images[0].classifiers[0].classes[0].class;
-        if(product=="Dobendan_Pill"){
-          $("#medicament-img").attr("src",products[12].img);
-          $("#medicament-title").text(products[12].name);
-          $("#medicament-description").text(products[12].fieldofuse);
-          $("#medicament-usage").text(products[12].dosage);
-          $("#medicament-substances").text(products[12].activesubstances);
-          $("#medicament-effect").text(products[12].contraindications);
-          $("#medicament-modal").modal("show");
+        var plane = res.images[0].classifiers[0].classes[0].class;
+        var probability = Math.round(res.images[0].classifiers[0].classes[0].score * 100);
+        if(plane=="a321_lufthansa"){
+          $("#plane-title").text("Airbus A321 (" + probability.toFixed(2) + "%)");
+          $("#plane-description").text("Lufthansa");
+          $("#plane-img").attr("src","img/planes/7.jpg");
+          $("#modell").val("A321");
+          $("#place").val("");
+          $("#airline").val("Lufthansa");
+          $("#manufactor").val("Airbus");
+
+        }else if (plane=="a319_easyjet"){
+            $("#plane-title").text("Airbus A319 (" + probability.toFixed(2) + "%)");
+            $("#plane-description").text("Easyjet");
+            $("#plane-img").attr("src","img/planes/5.jpg");
+            $("#modell").val("A319");
+            $("#place").val("");
+            $("#airline").val("Easyjet");
+            $("#manufactor").val("Airbus");
+
+        }else if (plane=="a380_etihad"){
+            $("#plane-title").text("Airbus A380 (" + probability.toFixed(2) + "%)");
+            $("#plane-description").text("Etihad");
+            $("#plane-img").attr("src","img/planes/6.jpeg");
+            $("#modell").val("A380");
+            $("#place").val("");
+            $("#airline").val("Etihad");
+            $("#manufactor").val("Airbus");
+
+        }else if (plane=="a319_eurowings"){
+          $("#plane-title").text("Airbus A319 (" + probability.toFixed(2) + "%)");
+          $("#plane-description").text("Eurowings");
+          $("#plane-img").attr("src","img/planes/1.jpg");
+          $("#modell").val("A319");
+          $("#place").val("");
+          $("#airline").val("Eurowings");
+          $("#manufactor").val("Airbus");
+
+        }else if (plane=="a380_emirates"){
+          $("#plane-title").text("Airbus A380 (" + probability.toFixed(2) + "%)");
+          $("#plane-description").text("Emirates");
+          $("#plane-img").attr("src","img/planes/4.jpeg");
+          $("#modell").val("A380");
+          $("#place").val("");
+          $("#airline").val("Emirates");
+          $("#manufactor").val("Airbus");
+
+        }else if (plane=="a380_lufthansa"){
+          $("#plane-title").text("Airbus A380 (" + probability.toFixed(2) + "%)");
+          $("#plane-description").text("Lufthansa");
+          $("#plane-img").attr("src", "img/planes/3.jpg");
+          $("#modell").val("A380");
+          $("#place").val("");
+          $("#airline").val("Lufthansa");
+          $("#manufactor").val("Airbus");
+
+        }else if (plane=="a321_turkishairlines"){
+          $("#plane-title").text("Airbus A321 (" + probability.toFixed(2) + "%)");
+          $("#plane-description").text("Turkish Airlines");
+          $("#plane-img").attr("src", "img/planes/2.jpg");
+          $("#modell").val("A321");
+          $("#place").val("");
+          $("#airline").val("Turkish Airlines");
+          $("#manufactor").val("Airbus");
         }
+
       }
     }).fail(function(e) {
       runLoader(false);
@@ -331,7 +346,8 @@ function initApp() {
       //$("#preloader").fadeIn();
       var form = new FormData();
       form.append('images_file', $('input[type=file]')[0].files[0]);
-      form.append("classifier_ids", "DefaultCustomModel_933387654");
+      form.append("classifier_ids", "Flightspot_559462961");
+      form.append("threshold", 0.6);
       requestAPI(form);
     };
 
