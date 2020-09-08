@@ -26,7 +26,7 @@
         <a class="navbar-brand" style="margin-right: 0;" href="index.html">
         <img style="max-width:100px" src="img/white_logo.png">
       </a>
-        <!--<div id="login-button" onclick="displayTab('profile')" class="navbar-login-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill:white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/><path d="M0 0h24v24H0z" fill="none"/></svg></div>-->
+        <div id="login-button" onclick="removePlane()" class="navbar-login-button"><i class="fas fa-plane-departure" style="color:white"></i></div>
     </nav>
 
 <div id="app-content" style="margin-top:80px">
@@ -44,34 +44,7 @@
           </div>
           <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
             <div class="card-body">
-
-              <form>
-                <div class="form-row">
-                  <div class="form-group col-md-4">
-                    <label for="inputEmail4">Hersteller</label>
-                    <input type="text" class="form-control" id="inputEmail4" placeholder="z.B. Airbus">
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label for="inputPassword4">Typ</label>
-                    <input type="text" class="form-control" id="inputPassword4" placeholder="z.B. A380">
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label for="inputPassword4">Airline</label>
-                    <input type="text" class="form-control" id="inputPassword4" placeholder="z.B. Lufthansa">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputAddress">Ort</label>
-                  <input type="text" class="form-control" id="inputAddress" placeholder="z.B. Flughafen München">
-                </div>
-                <div class="form-group">
-                  <label for="inputAddress">Bild auswählen</label>
-                  <input style="display:block!important"type="file" id="myFile" name="filename">
-                </div>
-              </form>
-              <button  style="width:100%"type="submit" class="btn btn-cobee">Hinzufügen</button>
-
-              <div class="" style="display:none">
+              <div id="aimode"class="" style="">
                 <h5 style="margin-top:30px"class="card-title">Scanne ein Flugzeug.</h5>
                 <p class="card-text">Scanne mit AI einen Flieger, um die Daten zu erhalten.</p>
 
@@ -84,6 +57,31 @@
 
                 <a id="send_btn" onclick="sendIBMVR()" class="btn btn-cobee" style="display: none;width:100%;color:white">Analyse starten</a>
               </div>
+              <form style="margin-top:10px">
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label for="inputEmail4">Hersteller</label>
+                    <input type="text" class="form-control" id="manufactor" placeholder="z.B. Airbus">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="inputPassword4">Typ</label>
+                    <input type="text" class="form-control" id="modell" placeholder="z.B. A380">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="inputPassword4">Airline</label>
+                    <input type="text" class="form-control" id="airline" placeholder="z.B. Lufthansa">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputAddress">Ort</label>
+                  <input type="text" class="form-control" id="place" placeholder="z.B. Flughafen München">
+                </div>
+                <div class="form-group">
+                  <label for="inputAddress">Bild auswählen</label>
+                  <input style="display:block!important"type="file" id="myFile" name="filename">
+                </div>
+              </form>
+              <button  onclick="addPlane()" style="width:100%"type="submit" class="btn btn-cobee">Hinzufügen</button>
             </div>
 
             </div>
@@ -99,6 +97,7 @@
               <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
               <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
               <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+              <li id="a320li" data-target="#carouselExampleIndicators" data-slide-to="3"></li>
             </ol>
             <div class="carousel-inner">
               <div class="carousel-item active" >
@@ -109,6 +108,9 @@
               </div>
               <div class="carousel-item">
                 <img class=" w-100" style="width:100px"src="img/a380/4.jpeg" alt="Third slide">
+              </div>
+              <div class="carousel-item">
+                <img  id="a320img" class=" w-100" style="width:100px"src="img/a320/1.jpeg" alt="4th slide">
               </div>
             </div>
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -168,6 +170,15 @@
                     <td>A321</td>
                     <td>Lufthansa</td>
                     <td><img src="img/a321/2.jpeg" style="width:100px" class="img-thumbnail"></td>
+                    <td><i class="fas fa-download"></i></td>
+                  </tr>
+                  <tr id="a320" style="">
+                    <th scope="row">4</th>
+                    <td id="newPlace">Hamburg Airport, Germany</td>
+                    <td id="newManufactor">Airbus</td>
+                    <td id="newModel">A320</td>
+                    <td id="newAirline">Lufthansa</td>
+                    <td><img src="img/a320/1.jpeg" style="width:100px" class="img-thumbnail"></td>
                     <td><i class="fas fa-download"></i></td>
                   </tr>
                 </tbody>
@@ -332,6 +343,22 @@ function initApp() {
        $("#app").fadeIn();
        $("#loader").hide();
      }
+    }
+
+    function removePlane(){
+      $("#a320").hide();
+      $("#a320li").hide();
+      $("#a320img").hide();
+    }
+
+    function addPlane(){
+      $("#a320").fadeIn();
+      $("#a320li").fadeIn();
+      $("#a320img").fadeIn();
+      $("#newModel").text($("#modell").val());
+      $("#newPlace").text($("#place").val());
+      $("#newAirline").text($("#airline").val());
+      $("#newManufactor").text($("#manufactor").val());
     }
 
 
