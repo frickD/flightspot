@@ -44,7 +44,7 @@
           </div>
           <div id="collapseColap" class="collapse" aria-labelledby="headingColap" data-parent="#accordion">
             <div id="accordion" class="card-body">
-              <div id="aimode"class="" style="display:none">
+              <div id="aimode"class="" style="">
                 <h5 style="margin-top:30px"class="card-title">Scanne ein Flugzeug.</h5>
                 <p class="card-text">Scanne mit AI einen Flieger, um die Daten zu erhalten.</p>
 
@@ -243,99 +243,6 @@ function initApp() {
   runLoader(false);
 }
 
-  function requestAPI(form) {
-    runLoader(true);
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": "https://gateway.watsonplatform.net/visual-recognition/api/v3/classify?version=2018-03-19",
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "Authorization": "Basic YXBpa2V5OjJrbVFoSFRoLWRRLTNGZHl4UlE3UWFKSm1xN0Q5VjRxSGR6TGhVaUF4OUN5"
-      },
-      "processData": false,
-      "contentType": false,
-      "mimeType": "multipart/form-data",
-      "data": form
-    }
-    $.ajax(settings).done(function(response) {
-      $("#medicament-modal").modal("show");
-      runLoader(false);
-      var res = JSON.parse(response);
-      console.log(res);
-      if (typeof res.images[0].classifiers[0].classes[0].class != "undefined") {
-        var plane = res.images[0].classifiers[0].classes[0].class;
-        var probability = Math.round(res.images[0].classifiers[0].classes[0].score * 100);
-        if(plane=="a321_lufthansa"){
-          $("#plane-title").text("Airbus A321 (" + probability.toFixed(2) + "%)");
-          $("#plane-description").text("Lufthansa");
-          $("#plane-img").attr("src","img/planes/7.jpg");
-          $("#modell").val("A321");
-          $("#place").val("");
-          $("#airline").val("Lufthansa");
-          $("#manufactor").val("Airbus");
-
-        }else if (plane=="a319_easyjet"){
-            $("#plane-title").text("Airbus A319 (" + probability.toFixed(2) + "%)");
-            $("#plane-description").text("Easyjet");
-            $("#plane-img").attr("src","img/planes/5.jpg");
-            $("#modell").val("A319");
-            $("#place").val("");
-            $("#airline").val("Easyjet");
-            $("#manufactor").val("Airbus");
-
-        }else if (plane=="a380_etihad"){
-            $("#plane-title").text("Airbus A380 (" + probability.toFixed(2) + "%)");
-            $("#plane-description").text("Etihad");
-            $("#plane-img").attr("src","img/planes/6.jpeg");
-            $("#modell").val("A380");
-            $("#place").val("");
-            $("#airline").val("Etihad");
-            $("#manufactor").val("Airbus");
-
-        }else if (plane=="a319_eurowings"){
-          $("#plane-title").text("Airbus A319 (" + probability.toFixed(2) + "%)");
-          $("#plane-description").text("Eurowings");
-          $("#plane-img").attr("src","img/planes/1.jpg");
-          $("#modell").val("A319");
-          $("#place").val("");
-          $("#airline").val("Eurowings");
-          $("#manufactor").val("Airbus");
-
-        }else if (plane=="a380_emirates"){
-          $("#plane-title").text("Airbus A380 (" + probability.toFixed(2) + "%)");
-          $("#plane-description").text("Emirates");
-          $("#plane-img").attr("src","img/planes/4.jpeg");
-          $("#modell").val("A380");
-          $("#place").val("");
-          $("#airline").val("Emirates");
-          $("#manufactor").val("Airbus");
-
-        }else if (plane=="a380_lufthansa"){
-          $("#plane-title").text("Airbus A380 (" + probability.toFixed(2) + "%)");
-          $("#plane-description").text("Lufthansa");
-          $("#plane-img").attr("src", "img/planes/3.jpg");
-          $("#modell").val("A380");
-          $("#place").val("");
-          $("#airline").val("Lufthansa");
-          $("#manufactor").val("Airbus");
-
-        }else if (plane=="a321_turkishairlines"){
-          $("#plane-title").text("Airbus A321 (" + probability.toFixed(2) + "%)");
-          $("#plane-description").text("Turkish Airlines");
-          $("#plane-img").attr("src", "img/planes/2.jpg");
-          $("#modell").val("A321");
-          $("#place").val("");
-          $("#airline").val("Turkish Airlines");
-          $("#manufactor").val("Airbus");
-        }
-
-      }
-    }).fail(function(e) {
-      runLoader(false);
-    });
-  }
 
     function openGallery(){
       $("#send_btn").fadeIn(1000);
@@ -377,5 +284,97 @@ function initApp() {
       $("#newManufactor").text($("#manufactor").val());
     }
 
+    function requestAPI(form) {
+      runLoader(true);
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://gateway.watsonplatform.net/visual-recognition/api/v3/classify?version=2018-03-19",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Authorization": "Basic YXBpa2V5OjJrbVFoSFRoLWRRLTNGZHl4UlE3UWFKSm1xN0Q5VjRxSGR6TGhVaUF4OUN5"
+        },
+        "processData": false,
+        "contentType": false,
+        "mimeType": "multipart/form-data",
+        "data": form
+      }
+      $.ajax(settings).done(function(response) {
+        $("#medicament-modal").modal("show");
+        runLoader(false);
+        var res = JSON.parse(response);
+        console.log(res);
+        if (typeof res.images[0].classifiers[0].classes[0].class != "undefined") {
+          var plane = res.images[0].classifiers[0].classes[0].class;
+          var probability = Math.round(res.images[0].classifiers[0].classes[0].score * 100);
+          if(plane=="a321_lufthansa"){
+            $("#plane-title").text("Airbus A321 (" + probability.toFixed(2) + "%)");
+            $("#plane-description").text("Lufthansa");
+            $("#plane-img").attr("src","img/planes/7.jpg");
+            $("#modell").val("A321");
+            $("#place").val("");
+            $("#airline").val("Lufthansa");
+            $("#manufactor").val("Airbus");
 
+          }else if (plane=="a319_easyjet"){
+              $("#plane-title").text("Airbus A319 (" + probability.toFixed(2) + "%)");
+              $("#plane-description").text("Easyjet");
+              $("#plane-img").attr("src","img/planes/5.jpg");
+              $("#modell").val("A319");
+              $("#place").val("");
+              $("#airline").val("Easyjet");
+              $("#manufactor").val("Airbus");
+
+          }else if (plane=="a380_etihad"){
+              $("#plane-title").text("Airbus A380 (" + probability.toFixed(2) + "%)");
+              $("#plane-description").text("Etihad");
+              $("#plane-img").attr("src","img/planes/6.jpeg");
+              $("#modell").val("A380");
+              $("#place").val("");
+              $("#airline").val("Etihad");
+              $("#manufactor").val("Airbus");
+
+          }else if (plane=="a319_eurowings"){
+            $("#plane-title").text("Airbus A319 (" + probability.toFixed(2) + "%)");
+            $("#plane-description").text("Eurowings");
+            $("#plane-img").attr("src","img/planes/1.jpg");
+            $("#modell").val("A319");
+            $("#place").val("");
+            $("#airline").val("Eurowings");
+            $("#manufactor").val("Airbus");
+
+          }else if (plane=="a380_emirates"){
+            $("#plane-title").text("Airbus A380 (" + probability.toFixed(2) + "%)");
+            $("#plane-description").text("Emirates");
+            $("#plane-img").attr("src","img/planes/4.jpeg");
+            $("#modell").val("A380");
+            $("#place").val("");
+            $("#airline").val("Emirates");
+            $("#manufactor").val("Airbus");
+
+          }else if (plane=="a380_lufthansa"){
+            $("#plane-title").text("Airbus A380 (" + probability.toFixed(2) + "%)");
+            $("#plane-description").text("Lufthansa");
+            $("#plane-img").attr("src", "img/planes/3.jpg");
+            $("#modell").val("A380");
+            $("#place").val("");
+            $("#airline").val("Lufthansa");
+            $("#manufactor").val("Airbus");
+
+          }else if (plane=="a321_turkishairlines"){
+            $("#plane-title").text("Airbus A321 (" + probability.toFixed(2) + "%)");
+            $("#plane-description").text("Turkish Airlines");
+            $("#plane-img").attr("src", "img/planes/2.jpg");
+            $("#modell").val("A321");
+            $("#place").val("");
+            $("#airline").val("Turkish Airlines");
+            $("#manufactor").val("Airbus");
+          }
+
+        }
+      }).fail(function(e) {
+        runLoader(false);
+      });
+    }
 </script>
